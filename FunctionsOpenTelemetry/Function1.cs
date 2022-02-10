@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace FunctionsOpenTelemetry
 {
@@ -17,7 +18,7 @@ namespace FunctionsOpenTelemetry
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogWarning("C# HTTP trigger function processed a request.");
 
             string name = req.Query["name"];
 
@@ -28,6 +29,9 @@ namespace FunctionsOpenTelemetry
             string responseMessage = string.IsNullOrEmpty(name)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
                 : $"Hello, {name}. This HTTP triggered function executed successfully.";
+
+            log.LogWarning("Name is {name}", name);
+            Activity.Current?.SetTag("name", name);
 
             return new OkObjectResult(responseMessage);
         }

@@ -8,17 +8,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 
 namespace FunctionsOpenTelemetry
 {
     public static class Function1
     {
+        internal static Meter MyMeter = new Meter("FunctionsOpenTelemetry.MyMeter");
+        internal static Counter<long> MyCounter = MyMeter.CreateCounter<long>("MyCounter");
+
         [FunctionName("Function1")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogWarning("C# HTTP trigger function processed a request.");
+            MyCounter.Add(1, new("name", "apple"), new("color", "red"));
 
             string name = req.Query["name"];
 

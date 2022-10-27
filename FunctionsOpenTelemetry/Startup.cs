@@ -50,9 +50,9 @@ namespace FunctionsOpenTelemetry
                 .AddMeter(Function1.MyMeter.Name)
                 .AddConsoleExporter(consoleOptions =>
                     {
-                        consoleOptions.MetricReaderType = MetricReaderType.Periodic;
-                        consoleOptions.AggregationTemporality = AggregationTemporality.Cumulative;
-                        consoleOptions.PeriodicExportingMetricReaderOptions.ExportIntervalMilliseconds = 10000;
+                        // consoleOptions.MetricReaderType = MetricReaderType.Periodic;
+                        // consoleOptions.AggregationTemporality = AggregationTemporality.Cumulative;
+                        // consoleOptions.PeriodicExportingMetricReaderOptions.ExportIntervalMilliseconds = 10000;
                     })
                 .Build();
             builder.Services.AddSingleton(openTelemetryMeterProvider);
